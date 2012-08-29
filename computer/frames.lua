@@ -38,6 +38,9 @@ function assembleit()
  handle:write(defaultmods)
  handle:close()
  end
+ if not fs.exists( "/startup" ) then
+	fs.move(shell.getRunningProgram(),"startup")
+ end
 
  local modstoload={}
  for a,b in pairs(fs.list("frx/mods")) do
