@@ -1,25 +1,23 @@
--- Frames by Jan
--- You are free to spread it :)
--- You may ONLY edit this program by adding mods to it,
--- using the newMod() function!
--- If you want to mod it in any otherway, or need a hook,
--- or have a suggestion, please go to Jan on the Computercraft forums.
--- ddd
---
--- This program is called Frames because there are multiple
--- 'windows' which you can run at the same time
--- it has nothing to do with Microsoft Windows :) (ugh ugh)
+--[[
 
--- From 1.1 to 1.2:
--- Made taskbar automaticly choose the right width
--- (More programs; smaller taskbar items)
--- Fixed the 'edit' problem, because 'edit' uses negative x-pos
--- Made a 'preloop' hook, which runs before starting the mainloop.
--- Made the 'shared' variable: should be used for windows-things.
--- Frames only updates screen when something in the GUI had changed
--- There must be at least 0.04 seconds between screen updates.
--- The 0.04 value is changable, and called the frame_limiter.
--- Started with Frames update. Type 'update' to see if there is a new version
+ ________   __________    ___________   _                  ________      ___________
+|  ______| |  ______  |  |  _______  | | |_____________   /  _____ \    /   _______/
+| |        | |      | |  | |       | | |  ____   ____  | |  /     \ |  |   |_____
+| |______  | |      | |  | |       | | | |    | |    | | |  \_____/ /   \_______ \
+|  ______| | |______| |  | |_______| | | |    | |    | | |  _______/            \ \
+| |        |    ______|  |  _______  | | |    | |    | |  \ \            _______/ /
+| |        | |\ \        | |       | | | |    | |    | |   \ \_____     /________/
+|_|        |_| \_\       |_|       |_| |_|    |_|    |_|    \_____/     
+
+
+Made By:
+Jan
+wilcomega
+
+users: do not share this to anyone. use the official download link
+servers: use the offical download link you may sell it for ingamemoney on your server
+
+]]--
 
 -- Vars
 
