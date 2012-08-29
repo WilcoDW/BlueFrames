@@ -20,39 +20,54 @@
 -- There must be at least 0.04 seconds between screen updates.
 -- The 0.04 value is changable, and called the frame_limiter.
 -- Started with Frames update. Type 'update' to see if there is a new version
+
+-- Vars
+
 local vers = "Frames Beta 1.4"
 local header = ""
 local main = ""
 local tail = ""
+local defaultmods = ""
+
+-- This is the assembleit function. It gets executed at the end of the file
+
+
 function assembleit()
-print("Autoassembler for "..vers)
-fs.makeDir("frx/mods")
-local modstoload={}
-for a,b in pairs(fs.list("frx/mods")) do
-local handle = io.open("frx/mods/"..b)
-if handle~=nil then
- local modtext = handle:read("*a")
+ print("Autoassembler for "..vers)
+ fs.makeDir("frx/mods")
+ if not fs.exists("frx/mods/default") then
+ handle = io.open("frx/mods/default","w")
+ handle:write(defaultmods)
  handle:close()
- print("Found: "..b)
- table.insert(modstoload,modtext)
-end
-end
-local fuuu = header..vers..main.."\n"
+ end
 
-for a,b in ipairs(modstoload) do
- fuuu = fuuu .. "\n" .. b
+ local modstoload={}
+ for a,b in pairs(fs.list("frx/mods")) do
+ local handle = io.open("frx/mods/"..b)
+ if handle~=nil then
+  local modtext = handle:read("*a")
+  handle:close()
+  print("Found: "..b)
+  table.insert(modstoload,modtext)
+ end
+ end
+ local fuuu = header..vers..main.."\n"
+ for a,b in ipairs(modstoload) do
+  fuuu = fuuu .. "\n" .. b
+ end
+ fuuu = fuuu..tail
+ print("Saving text")
+ handle = io.open("frx/assem","w")
+ handle:write(fuuu)
+ handle:close()
+ print("Running in shell...")
+ shell.run("frx/assem")
 end
 
-fuuu = fuuu..tail
 
-print("Saving text")
-sleep(1)
-handle = io.open("frx/assem","w")
-handle:write(fuuu)
-handle:close()
-print("Running in shell...")
-shell.run("frx/assem")
-end
+
+--- Here is the program text
+
 header=[[
 local version = "]]
 
@@ -703,11 +718,13 @@ os.queueEvent("frames_just_started")
 mainloop()
 end
 
+]]
 
+defaultmods=[[
 
 -- Here come all the Mods.
 
-newMod("Frames Focus Manager","v1","Jan", function()
+newMod("Default Mods","v1","Frames", function()
 
 newHook("spp",function()
  if rarg[1]=="key" and rarg[2]==15 then
@@ -738,9 +755,7 @@ newHook("cpp",function()
  end
 end)
 
-end)
-
-newMod("Term Virtualisation Helper","v1","Jan",function()
+-- VIRTUALISATION
 
 newHook("cpp",function()
  img=q
@@ -757,9 +772,7 @@ newHook("cap",function()
  p[q].pos.y=pos.y
 end)
 
-end)
-
-newMod("Process Starter and Stopper","v1","Jan",function()
+ -- PROCESS STARTER AND STOPPER
 
 newHook("cpp",function()
 if fw then
@@ -795,9 +808,8 @@ newHook("cap",function()
 
 end)
 
-end)
 
-newMod("Rendering","v1","Jan",function()
+-- RENDERING
 
 
 newHook("spp",function()
@@ -864,9 +876,7 @@ newHook("sap",function()
  end
 end)
 
-end)
-
-newMod("Startloader","v1","Jan",function()
+-- STARTLOADER
 
 newHook("preloop",function()
 newWindow(files.menustart)
