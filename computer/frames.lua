@@ -108,6 +108,7 @@ local bug = ""
 local currentmod
 local hooks = {}
 local hooknames = {}
+local commands = {}
 
 function pack(...)
  return arg
@@ -308,7 +309,6 @@ files.menustart = function()
  while true do
   term.clear()
   term.setCursorPos(w-11,h)
-  term.write("Made by Jan")
 
   term.setCursorPos(1,1)
   cprint("Welcome to "..version)
@@ -331,6 +331,13 @@ files.menustart = function()
   print("Type nothing to open new window")
   term.write("> ")
   dothis=read()
+  
+  for i = 1, #commands do
+	if dothis == commands[i].label then
+		commands[i].cmd( )
+	end
+  end
+  
   if dothis=="tut" then
    focus = newWindow(function()
    setTitle("Tut")
@@ -667,6 +674,12 @@ function checkHooks(name)
   b()
  end
  return fw
+end
+
+function newCommand( sLabel, fDo )
+	local nIndex = #commands + 1
+	commands[nIndex].cmd = sLabel
+	commands[nIndex].cmd = fDo
 end
 
 
