@@ -1,0 +1,140 @@
+function waitForKey( nKey )
+	while true do
+		local ev, k = os.pullEvent( "key" )
+		if k == nKey then
+			return
+		end
+	end
+end
+
+openCenter = function( )
+	focus = newWindow( function()
+		
+		local function split(str, pat)
+			local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+			local fpat = "(.-)" .. pat
+			local last_end = 1
+			local s, e, cap = str:find(fpat, 1)
+			while s do
+				if s ~= 1 or cap ~= "" then
+					table.insert(t,cap)
+				end
+				last_end = e+1
+				s, e, cap = str:find(fpat, last_end)
+			end
+			if last_end <= #str then
+				cap = str:sub(last_end)
+				table.insert(t, cap)
+			end
+			return t
+		end
+		
+		local function downloadMod( url, name )
+			if http then
+				status = 3
+				local response = http.get( url )
+			
+				if response then
+					local sResponse = response.readAll()
+					response.close()
+					
+					local file = fs.open( "/frx/mods/"..name, "w" )
+					file.write( sResponse )
+					file.close()
+					status = 5
+					sleep( 1 )
+					status = 1
+				else
+					status = 4
+					sleep( 1 )
+					status = 1
+				end	
+			else
+				status = 4
+				sleep( 1 )
+				status = 1
+			end
+		end
+
+		
+		-- vars:
+		local statuses = { "idle", "getting mod list", "downloading mod", "no connection", "mod downloaded" }
+		local status = 1
+		local modList = { }
+		local modName = { }
+		
+		setTitle( "DL Center" )
+		setLongTitle( "Download Center" )
+		
+		term.setCursorPos( 1, 1 )
+		
+		term.write( "Welcome to the Download Center, made for mods     status: "..statuses[status] )
+		sleep( 1 )
+		
+		while true do
+			
+			term.setCursorPos( 1, 1 )
+			term.write( "Welcome to the Download Center     status: "..statuses[status] )
+			
+			term.setCursorPos( 3, hi - 2 )
+			term.write( "> " )
+			
+			term.setCursorPos( 5, hi - 2 )
+			local sInput = read( )
+			
+			tInput = split( sInput, " " )
+			if tInput[1] == "refresh" then
+				if http then
+					status = 2
+					sleep( 2 )
+			
+					local response = http.get( "http://www.wilcoweggeman.nl/minecraft/BlueFrames/listDLcenter.php" )
+					if response then
+						modList = split( response.readAll( ), "****" )
+						term.setCursorPos( 3, 3 )
+						term.write( "Downloadable mods:" )
+						
+						response.close( )
+						
+						for i = 1, #modList do
+							term.setCursorPos( 3, 3 + i )
+							modName[i] = split( modList[i], "." )
+							term.write( modname[i][1] )
+						end
+						
+						status = 1
+					else
+						status = 4
+						sleep( 1 )
+						status = 1
+					end
+				else
+					status = 4
+				end
+			end
+			
+			if tInput[1] == "download" then
+				for i = 1, #modList do
+					if tInput[2] == modName[i][1] then
+						downloadMod( "http://wilcoweggeman.nl/minecraft/BlueFrames/DLcenter/"..tInput[2]..".mod", tInput[2] )
+					end
+				end
+				if string.sub( tInput[2], 1, 7 ) == "http://" then
+					downloadMod( tInput[2], tInput[3] )
+				end
+			end
+			
+			if tInput[1] == "exit" then
+				break
+			end
+			
+			
+			
+		end
+		
+	end	)
+end
+
+newCommand( "download center", openCenter )
+
+newMod( "Download Center", "V1.0", "wilcomega", function() end )
