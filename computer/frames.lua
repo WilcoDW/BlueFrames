@@ -21,7 +21,7 @@ servers: use the offical download link you may sell it for ingamemoney on your s
 
 -- Vars
 
-local vers = "Frames Beta 1.4"
+local vers = "BlueFrames Beta 1.4"
 local header = ""
 local main = ""
 local tail = ""
@@ -54,9 +54,9 @@ function assembleit()
  end
  local fuuu = header..vers..main.."\n"
  for a,b in ipairs(modstoload) do
-  fuuu = fuuu .. "\n" .. b
+  fuuu = fuuu .. "\n\n" .. b
  end
- fuuu = fuuu..tail
+ fuuu = fuuu.."\n\n"..tail
  print("Saving text")
  handle = io.open("frx/assem","w")
  handle:write(fuuu)
@@ -342,7 +342,7 @@ files.menustart = function()
    focus = newWindow(function()
    setTitle("Tut")
    setLongTitle("Tutorial")
-   print("Welcome to Frames!")
+   print("Welcome to BlueFrames!")
    print("See that bar below? That is the taskbar!")
    print("In Frames, you can run multiple programs at the same time")
    print("Press ENTER to open a new shell window!")
@@ -370,12 +370,12 @@ files.menustart = function()
   elseif dothis=="help" then
    focus = newWindow(function()
    setTitle("Help")
-   print(version.." by Jan")
+   print(version.." by BlueTide")
    print("Special thanks to Ardera, who made Screen Capture")
    print("Command list:")
    print("(nothing)    Open new window")
    print("tut          Start tutorial")
-			print("update       Check for updates")
+   print("update       Check for updates")
    print("help         Display this window")
    print("mods         List installed mods")
    print("exit (shell) Close window")
@@ -678,7 +678,8 @@ end
 
 function newCommand( sLabel, fDo )
 	local nIndex = #commands + 1
-	commands[nIndex].cmd = sLabel
+	commands[nIndex] = { }
+	commands[nIndex].label = sLabel
 	commands[nIndex].cmd = fDo
 end
 
@@ -828,7 +829,7 @@ end)
 
 newHook("spp",function()
 if rarg[1]=="timer" then
- if rarg[2]==shared.num then
+ if rarg[2]==shared[num] then
    shared.render=true
  end
 end
@@ -888,6 +889,7 @@ newHook("sap",function()
   end
   u.term.setCursorPos(p[focus].pos.x,p[focus].pos.y)
  end
+ u.term.setCursorBlink( false )
 end)
 
 -- STARTLOADER
