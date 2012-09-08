@@ -100,7 +100,7 @@ shared.maxtasksize=13
 shared.livings=1
 shared.updates=0
 shared.needupdate=true
-shared.forceupdate=false
+shared.forceupdate=true
 shared.newest = "error"
 local isFaked =true
 local errr = ""
@@ -829,7 +829,7 @@ end)
 
 newHook("spp",function()
 if rarg[1]=="timer" then
- if rarg[2]==shared[num] then
+ if rarg[2]==shared.num then
    shared.render=true
  end
 end
