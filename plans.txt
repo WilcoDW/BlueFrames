@@ -1,0 +1,26 @@
+Plans for total rewrite, for (Blue)Frames 2.0
+
+1. Use Dan's code style for local variables:
+ All variables are prefixed with one small letter which stands for the type:
+ Here are some examples:
+ sText = "Hello"
+ nTimes = 16
+ tPeople = {"Mike","Bob"}
+ bContinue = true
+ 
+2. Create a local, 'shared' variable which all mods can use.
+ Suggested names: tS tShared
+
+3. Make processes (coroutines) control multiple (or zero) windows.
+ (now one process has always one window)
+
+4. Processes can use term.redirect(obj) to redirect to certain window.
+ Windows-objects will have the same structure as monitor-objects, like in mon=peripheral.wrap("left")
+
+5. A computer can choose per id to send his windows via rednet.
+example:
+tPermissions={}
+tPermissions[4] = 1 -- Allows computer #4 to read all windows.
+tPermissions[4] = 2 -- Allows computer #4 to read all windows, and send keystrokes (char and key events).
+tPermissions[4] = nil -- Computer #4 can do nothing.
+
