@@ -889,7 +889,7 @@ newHook("sap",function()
   end
   u.term.setCursorPos(p[focus].pos.x,p[focus].pos.y)
  end
- u.term.setCursorBlink( false )
+ u.term.setCursorBlink( true )
 end)
 
 -- STARTLOADER
